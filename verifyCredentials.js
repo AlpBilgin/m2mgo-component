@@ -1,4 +1,4 @@
-const axios = require("axios");
+const Axios = require("axios");
 
 // This function will be called by the platform to verify credentials
 module.exports = function verifyCredentials(credentials, cb) {
