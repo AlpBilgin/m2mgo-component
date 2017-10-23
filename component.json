@@ -12,7 +12,7 @@
             },
             "password": {
                 "viewClass": "TextFieldView",
-                "label": "PAssword",
+                "label": "Password",
                 "required": true,
                 "placeholder": "The M2MGO account password"
             }
