@@ -14,7 +14,7 @@ module.exports = function verifyCredentials(credentials, cb) {
     }
 
 
-    this.http.post('/cms/membership-user/token' + endpointName, payload, {
+    this.http.post('/cms/membership-user/token', payload, {
             responseType: 'json'
         }).then(function (response) {
             console.log(response);
