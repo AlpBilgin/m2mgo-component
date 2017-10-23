@@ -2,6 +2,7 @@ const axios = require("axios");
 
 // This function will be called by the platform to verify credentials
 module.exports = function verifyCredentials(credentials, cb) {
+    console.log('Does adding a comment here have any effect?');
     console.log('Credentials passed for verification %j', credentials);
 
     //
