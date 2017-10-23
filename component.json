@@ -1,0 +1,36 @@
+{
+    "title": "Pipedrive",
+    "description": "elastic.io integration component for pipedrive",
+    "docsUrl": "https://www.mvise.de",
+    "credentials": {
+        "fields": {
+            "email": {
+                "viewClass": "TextFieldView",
+                "label": "Email",
+                "required": true,
+                "placeholder": "The M2MGO account email"
+            },
+            "password": {
+                "viewClass": "TextFieldView",
+                "label": "PAssword",
+                "required": true,
+                "placeholder": "The M2MGO account password"
+            }
+        }
+    },
+    "triggers": {},
+    "actions": {
+        "createPerson": {
+            "title": "Transfer data into M2MGO entities",
+            "main": "./lib/actions/push.js",
+            "fields": {
+                "owner_id": {
+                    "viewClass": "TextFieldView",
+                    "label": "Owner id",
+                    "placeholder": "Target pipedrive user id to override the default behaviour."
+                }
+            },
+            "dynamicMetadata": true
+        }
+    }
+}
