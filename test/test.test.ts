@@ -5,6 +5,8 @@ import {ComponentConfig} from "../src/models/componentConfig";
 
 // If environment variables can't be passed to node, create a .env file in root
 // and define EMAIL=XXXX and PASSWORD=YYYY inside
+console.log(process.env.EMAIL);
+console.log(process.env.PASSWORD);
 if (!(process.env.EMAIL && process.env.PASSWORD)){
    console.log("Test will attempt to pull variables from .env file")
    require('dotenv').config();
