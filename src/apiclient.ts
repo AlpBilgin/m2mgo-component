@@ -19,7 +19,7 @@ export interface Credentials {
 export class APIClient {
     private http: AxiosInstance;
     private credentials :Credentials;
-    private entitiyID :string;
+    private entityID :string;
 
     constructor(cfg: ComponentConfig) {
         this.http = Axios.create({
@@ -28,7 +28,7 @@ export class APIClient {
         });
 
         this.credentials = { Email: cfg.Email, Password:cfg.Password};
-        this.entitiyID= cfg.M2MGO_Entity;
+        this.entityID= cfg.M2MGO_Entity;
 
         // Tokens have a lifetime of 30 mins.This interceptor will have a chance
         // to process the response before it is returned to the component logic
@@ -74,18 +74,25 @@ export class APIClient {
 
     async getEntity(){
       // console.log(this.entitiyID)
-      const resp = await this.http.get("https://pst.m2mgo.com/api/prototypeentities/types/"+this.entitiyID);
+      const resp = await this.http.get("https://pst.m2mgo.com/api/prototypeentities/types/"+this.entityID);
       // console.log("table", resp.data);
       // TODO filter with JSONata
       return resp.data;
     }
 
     async insertRow(payload: any): Promise<any> {
-        const response = await this.http.post("/prototypeentities/entities/" + this.entitiyID, payload, { responseType: "json" });
+        const response = await this.http.post("/prototypeentities/entities/" + this.entityID, payload, { responseType: "json" });
         const result = <APIResult>response.data;
         if (!result.success) {
-            throw new Error("could not entity for endpoint" + this.entitiyID);
+            throw new Error("could not entity for endpoint" + this.entityID);
         }
         return result.data;
+    }
+
+    getEntityID():string{
+      return this.entityID;
+    }
+    setEntityID(id: string){
+      this.entityID=id;
     }
 }

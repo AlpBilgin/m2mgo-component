@@ -2,14 +2,15 @@ import {APIClient }from "../src/apiclient";
 import {ComponentConfig} from "../src/models/componentConfig";
 
 
-// If environment variables can't be declared, create a testConfig.ts file and
-// locally declare cfg object in root folder
-let cfg:ComponentConfig
-if (process.env.EMAIL && process.env.PASSWORD){
-   cfg = {Email:process.env.EMAIL, Password:process.env.PASSWORD, M2MGO_Entity:""} as ComponentConfig
-} else {
-   cfg = require("../testConfig").cfg;
+
+// If environment variables can't be passed to node, create a .env file in root
+// and define EMAIL=XXXX and PASSWORD=YYYY inside
+if (!(process.env.EMAIL && process.env.PASSWORD)){
+   console.log("Test will attempt to pull variables from .env file")
+   require('dotenv').config();
 }
+
+let cfg = {Email:process.env.EMAIL, Password:process.env.PASSWORD, M2MGO_Entity:""} as ComponentConfig
 
 // console.log(cfg);
 
@@ -26,14 +27,14 @@ async function tester(){
   await api.fetchToken();
 
 // the act of selecting a table from the dropdown
-    api.entitiyID=Object.keys(await api.getEntities())[0];
+    api.setEntityID(Object.keys(await api.getEntities())[0]);
     // Check to see if the returned hash matches the expected 8-4-4-4-12 format
-    expect(api.entitiyID).toMatch(/[^-]{8}-[^-]{4}-[^-]{4}-[^-]{4}-[^-]{12}/);
+    expect(api.getEntityID()).toMatch(/[^-]{8}-[^-]{4}-[^-]{4}-[^-]{4}-[^-]{12}/);
 
 
 // this is the dynamic metadata function
   const holder = await api.getEntity();
-  let metadata = {};
+  let metadata = {in:null, out:null};
   let inHolder = {};
   let outHolder = {};
    // console.log(holder.Columns);
@@ -47,8 +48,8 @@ async function tester(){
     )
   }
 
-  metadata["in"]=inHolder;
-  metadata["out"]=outHolder;
+  metadata.in=inHolder;
+  metadata.out=outHolder;
 
   // Check if all items have a title
   for(const key in metadata.in ){
