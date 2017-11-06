@@ -1,12 +1,12 @@
 {
-    "name": "pipedrive-component",
+    "name": "m2mgo-component",
     "version": "0.0.1",
-    "description": "pipedrive component",
-    "homepage": "https://www.pipedrive.org/",
+    "description": "M2MGO component",
+    "homepage": "https://www.m2mgo.com/",
     "author": {
-        "name": "mVISE AG",
-        "email": "info@mvise.de",
-        "url": "https://www.mvise.de"
+        "name": "Trendig Technology Services",
+        "email": "hi@trendig.com",
+        "url": "https://trendig.com/"
     },
     "engines": {
         "node": "^8.3.0",

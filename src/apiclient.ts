@@ -1,11 +1,6 @@
-import Axios from 'axios';
-import { AxiosInstance } from 'axios';
-
-import { Deal } from './models/deal';
-import { Note } from './models/note';
-import { Organization } from './models/organization';
-import { Person } from './models/person';
-import { Activity } from './models/activity';
+import Axios from "axios";
+import { AxiosInstance } from "axios";
+import { ComponentConfig} from "./models/componentConfig";
 
 export interface APIResult {
     success: boolean;
@@ -13,42 +8,84 @@ export interface APIResult {
     related_objects: any;
 }
 
+export interface Credentials {
+  Email: string;
+  Password: string;
+}
+
+// https://pst.m2mgo.com/api/cms/membership-user/token
+// https://pst.m2mgo.com/api/prototypeentities/entities/eb569bd2-eb72-429b-a3f1-59482fb05b80
+
 export class APIClient {
     private http: AxiosInstance;
+    private credentials :Credentials;
+    private entitiyID :string;
 
-    constructor(companyDomain: string, token: string) {
+    constructor(cfg: ComponentConfig) {
         this.http = Axios.create({
-            baseURL: 'https://' + companyDomain + '.pipedrive.com/v1',
-            params: { 'api_token': token }
+            baseURL: "https://pst.m2mgo.com/api",
+            headers: { Authorization: "" }
         });
+
+        this.credentials = { Email: cfg.Email, Password:cfg.Password};
+        this.entitiyID= cfg.M2MGO_Entity;
+
+        // Tokens have a lifetime of 30 mins.This interceptor will have a chance
+        // to process the response before it is returned to the component logic
+        // and will attempt to refresh the bearer token if the response is a 401
+        // error.
+        this.http.interceptors.response.use(
+          response=>response,
+          error=>{
+            if (error.response.status === 401) {
+              this.http.post("/cms/membership-user/token", this.credentials).then(r=> {
+                this.http.defaults.headers["Authorization"]= r.data.TokenPrefix + " " + r.data.Token;
+                error.response.config.headers["Authorization"]= r.data.TokenPrefix + " " + r.data.Token;
+                return this.http.request(error.response.config);
+          }).catch(error=> {
+            throw error;
+          });
+        }
+    });
     }
 
-    async createDeal(deal: Deal) {
-        return this.create<Deal>(deal, "deals");
+    // This function will attempt to fetch an initial auth token
+    // TODO remove once the response interceptor is verified to work.
+    async fetchToken(){
+      const resp = await this.http.post("/cms/membership-user/token",this.credentials);
+      this.http.defaults.headers["Authorization"]= resp.data.TokenPrefix + " " + resp.data.Token;
     }
 
-    async createNote(note: Note) {
-        return this.create<Note>(note, "notes");
+    async getEntities(){
+      let list = {};
+      try{
+      const resp = await this.http.get("/prototypeentities/types/all");
+      //console.log(resp.data);
+      // TODO filter with JSONata
+      for (const key in resp.data ){
+        list[resp.data[key].Identifier.ID]=resp.data[key].Label;
+      }
+    } catch (error){
+      console.log(error);
+    }
+    // console.log("list",list);
+    return list;
     }
 
-    async createOrganization(organization: Organization) {
-        return this.create<Organization>(organization, "organizations");
+    async getEntity(){
+      // console.log(this.entitiyID)
+      const resp = await this.http.get("https://pst.m2mgo.com/api/prototypeentities/types/"+this.entitiyID);
+      // console.log("table", resp.data);
+      // TODO filter with JSONata
+      return resp.data;
     }
 
-    async createPerson(person: Person) {
-        return this.create<Person>(person, "persons");
-    }
-
-    async createActivity(activity: Activity) {
-        return this.create<Activity>(activity, "activities");
-    }
-
-    private async create<T>(payload: T, endpointName: string): Promise<T> {
-        const response = await this.http.post('/' + endpointName, payload, { responseType: 'json' });
+    async insertRow(payload: any): Promise<any> {
+        const response = await this.http.post("/prototypeentities/entities/" + this.entitiyID, payload, { responseType: "json" });
         const result = <APIResult>response.data;
         if (!result.success) {
-            throw new Error('could not entity for endpoint ' + endpointName);
+            throw new Error("could not entity for endpoint" + this.entitiyID);
         }
-        return <T>result.data;
+        return result.data;
     }
 }

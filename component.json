@@ -4,13 +4,13 @@
     "docsUrl": "https://www.mvise.de",
     "credentials": {
         "fields": {
-            "email": {
+            "Email": {
                 "viewClass": "TextFieldView",
                 "label": "Email",
                 "required": true,
                 "placeholder": "The M2MGO account email"
             },
-            "password": {
+            "Password": {
                 "viewClass": "TextFieldView",
                 "label": "Password",
                 "required": true,
@@ -20,14 +20,16 @@
     },
     "triggers": {},
     "actions": {
-        "createPerson": {
+        "Insert Rows": {
             "title": "Transfer data into M2MGO entities",
             "main": "./lib/actions/push.js",
             "fields": {
-                "owner_id": {
-                    "viewClass": "TextFieldView",
+                "M2MGO_Entity": {
                     "label": "Owner id",
-                    "placeholder": "Target pipedrive user id to override the default behaviour."
+                    "viewClass": "SelectView",
+                    "required": true,
+                    "model": "getEntities",
+                    "prompt": "Please select an entity."
                 }
             },
             "dynamicMetadata": true

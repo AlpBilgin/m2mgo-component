@@ -13,19 +13,19 @@ module.exports = function verifyCredentials(credentials, cb) {
         "Password": credentials.password
     }
 
-    console.log('POST req payload %j', payload);
+    // console.log('POST req payload %j', payload);
 
     http.post('/cms/membership-user/token', payload, {
         responseType: 'json'
     }).then(function (response) {
-        console.log('a');
-        console.log(response.data);
+        // console.log('a');
+        // console.log(response.data);
         cb(null, {
             verified: true
         });
     }).catch(function (error) {
-        console.log('b');
-        console.log(error);
+        // console.log('b');
+        // console.log(error);
         cb(null, {
             verified: false
         });
