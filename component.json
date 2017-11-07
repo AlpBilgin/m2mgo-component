@@ -20,7 +20,7 @@
     },
     "triggers": {},
     "actions": {
-        "Insert Rows": {
+        "Insert_Rows": {
             "title": "Transfer data into M2MGO entities",
             "main": "./lib/actions/push.js",
             "fields": {
