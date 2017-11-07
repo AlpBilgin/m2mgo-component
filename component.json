@@ -25,10 +25,10 @@
             "main": "./lib/actions/push.js",
             "fields": {
                 "M2MGO_Entity": {
-                    "label": "Owner id",
+                    "label": "Select Entity",
                     "viewClass": "SelectView",
                     "required": true,
-                    "model": "getEntities",
+                    "model": "getEntitySelectModel",
                     "prompt": "Please select an entity."
                 }
             },

@@ -1,61 +1,46 @@
 import { APIClient } from "../src/apiclient";
 import { ComponentConfig } from "../src/models/componentConfig";
+import { InputField } from "../src/common";
+import { checkAndImport } from "./common.test";
+
+var testConfig = checkAndImport("../testconfig").TestConfig;
 
 // If environment variables aren't declared, ignore the test
-if (!(process.env.EMAIL && process.env.PASSWORD)) {
+if (!testConfig) {
   it("will ignore integration tests", () => {
-    expect(true).toBe(true);
+    expect(true).toBe(false);
   });
 } else {
+  it("should run several successful API client calls", async () => {
 
-  let cfg = { Email: process.env.EMAIL, Password: process.env.PASSWORD, M2MGO_Entity: "" } as ComponentConfig;
+    let cfg = { Email: testConfig.Email, Password: testConfig.Password, M2MGO_Entity: "" } as ComponentConfig;
 
-  // console.log(cfg);
+    const api = new APIClient(cfg);
+    // test Login
+    expect(await api.fetchToken()).toBeTruthy();
 
-  const api = new APIClient(cfg);
+    // Procure a list of entities for dropdown list
+    const entities = await api.getEntities();
+    expect(entities).toBeDefined();
 
-  class InputField {
-    constructor(public type: string,
-      public required: boolean,
-      public title: string) { }
-  }
-
-  async function tester() {
-    // Common Login
-    await api.fetchToken();
-
-    // Selecting a table from the dropdown
-    api.setEntityID(Object.keys(await api.getEntities())[0]);
-    // Check to see if the returned hash matches the expected 8-4-4-4-12 format
+    // Select first entity ID and feed it to API
+    api.setEntityID(Object.keys(entities)[0]);
+    // Check to see if the processes ID shash matches the expected 8-4-4-4-12 format
     expect(api.getEntityID()).toMatch(/[^-]{8}-[^-]{4}-[^-]{4}-[^-]{4}-[^-]{12}/);
 
+    // This function is for dynamic metadata
+    const entity = await api.getEntity();
+    expect(entity).toBeDefined();
+  });
 
-    // this is the dynamic metadata function
-    const holder = await api.getEntity();
-    let metadata = { in: null, out: null };
-    let inHolder = {};
-    let outHolder = {};
-    // console.log(holder.Columns);
-    const columns = holder.Columns;
-    for (const index in columns) {
-      let key = columns[index].Key;
-      inHolder[key] = new InputField(
-        columns[index].ColumnType,
-        true,
-        columns[index].Label
-      );
-    }
+  it("should run an unsuccessful API client call", async () => {
 
-    metadata.in = inHolder;
-    metadata.out = outHolder;
+    let cfg = { Email: "", Password: "", M2MGO_Entity: "" } as ComponentConfig;
 
-    // Check if all items have a title
-    for (const key in metadata.in) {
-      expect(metadata.in[key].title).toBeDefined();
-    }
-
-  }
-  it("should run tester", tester);
+    const api = new APIClient(cfg);
+    // test bad Login
+    expect(await api.fetchToken()).toBeFalsy();
+  });
 }
 
 

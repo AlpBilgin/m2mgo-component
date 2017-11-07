@@ -4,11 +4,11 @@ import { ComponentConfig } from "../models/componentConfig";
 import { PipedriveMessage } from "../models/pipedriveMessage";
 
 import { APIClient } from "../apiclient";
-import { getEntities, parseEntity } from "../common";
+import { getEntitySelectModel, parseEntity } from "../common";
 
 exports.process = pushRows;
 // This "redirect" behavior avoids code duplication
-exports.getEntities = getEntities;
+exports.getEntitySelectModel = getEntitySelectModel;
 exports.getMetaModel = parseEntity;
 
 
