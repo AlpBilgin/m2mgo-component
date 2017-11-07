@@ -3,17 +3,17 @@ import { ComponentConfig } from "../src/models/componentConfig";
 import { InputField } from "../src/common";
 import { checkAndImport } from "./common.test";
 
-var testConfig = checkAndImport("../testconfig").TestConfig;
+var testConfig = checkAndImport("../testconfig");
 
 // If environment variables aren't declared, ignore the test
 if (!testConfig) {
   it("will ignore integration tests", () => {
-    expect(true).toBe(false);
+    expect(true).toBe(true);
   });
 } else {
   it("should run several successful API client calls", async () => {
 
-    let cfg = { Email: testConfig.Email, Password: testConfig.Password, M2MGO_Entity: "" } as ComponentConfig;
+    let cfg = { Email: testConfig.TestConfig.Email, Password: testConfig.TestConfig.Password, M2MGO_Entity: "" } as ComponentConfig;
 
     const api = new APIClient(cfg);
     // test Login

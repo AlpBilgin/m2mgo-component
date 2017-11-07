@@ -10,7 +10,7 @@ export function checkAndImport(path: string): any {
   }
 }
 
-var testConfig = checkAndImport("../testconfig").TestConfig;
+var testConfig = checkAndImport("../testconfig");
 
 function consoleDumpCallback(first, second, third?) {
   expect(first).toBeNull();
@@ -19,7 +19,7 @@ function consoleDumpCallback(first, second, third?) {
 
 async function tester() {
 
-  let cfg = { Email: testConfig.Email, Password: testConfig.Password, M2MGO_Entity: "" } as ComponentConfig;
+  let cfg = { Email: testConfig.TestConfig.Email, Password: testConfig.TestConfig.Password, M2MGO_Entity: "" } as ComponentConfig;
 
   let result = await getEntitySelectModel(cfg, consoleDumpCallback);
   // console.log("dropdown selection", Object.keys(result)[0]);
