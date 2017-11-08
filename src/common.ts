@@ -31,7 +31,7 @@ export async function parseEntity(cfg: ComponentConfig, cb: any) {
         cb(null, {});
     }
 
-    let metadata = { in: {}, out: {} };
+    let metadata = { type: "object", in: {}, out: {} };
     let inHolder = {};
     let outHolder = {};
     // TODO do this transform properly.
