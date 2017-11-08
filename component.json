@@ -4,13 +4,13 @@
     "docsUrl": "https://www.mvise.de",
     "credentials": {
         "fields": {
-            "Email": {
+            "email": {
                 "viewClass": "TextFieldView",
                 "label": "Email",
                 "required": true,
                 "placeholder": "The M2MGO account email"
             },
-            "Password": {
+            "password": {
                 "viewClass": "TextFieldView",
                 "label": "Password",
                 "required": true,

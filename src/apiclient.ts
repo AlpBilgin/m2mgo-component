@@ -27,7 +27,7 @@ export class APIClient {
       headers: { Authorization: "" }
     });
 
-    this.credentials = { Email: cfg.Email, Password: cfg.Password };
+    this.credentials = { Email: cfg.email, Password: cfg.password };
     this.entityID = cfg.M2MGO_Entity;
 
     // Tokens have a lifetime of 30 mins.This interceptor will have a chance

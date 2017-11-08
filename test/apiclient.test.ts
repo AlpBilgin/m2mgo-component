@@ -13,7 +13,7 @@ if (!testConfig) {
 } else {
   it("should run several successful API client calls", async () => {
 
-    let cfg = { Email: testConfig.TestConfig.Email, Password: testConfig.TestConfig.Password, M2MGO_Entity: "" } as ComponentConfig;
+    let cfg = { email: testConfig.TestConfig.Email, password: testConfig.TestConfig.Password, M2MGO_Entity: "" } as ComponentConfig;
 
     const api = new APIClient(cfg);
     // test Login

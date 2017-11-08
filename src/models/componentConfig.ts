@@ -1,5 +1,5 @@
 export interface ComponentConfig {
-    Email: string;
-    Password: string;
+    email: string;
+    password: string;
     M2MGO_Entity: string;
 }

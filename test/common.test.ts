@@ -19,7 +19,7 @@ function consoleDumpCallback(first, second, third?) {
 
 async function tester() {
 
-  let cfg = { Email: testConfig.TestConfig.Email, Password: testConfig.TestConfig.Password, M2MGO_Entity: "" } as ComponentConfig;
+  let cfg = { email: testConfig.TestConfig.Email, password: testConfig.TestConfig.Password, M2MGO_Entity: "" } as ComponentConfig;
 
   let result = await getEntitySelectModel(cfg, consoleDumpCallback);
   // console.log("dropdown selection", Object.keys(result)[0]);
