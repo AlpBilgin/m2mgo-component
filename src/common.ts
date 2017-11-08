@@ -9,9 +9,11 @@ export class InputField {
 
 export async function getEntitySelectModel(cfg: ComponentConfig, cb: any) {
     const client = new APIClient(cfg);
-    await client.fetchToken();
+    console.log("cfg", cfg);
+    const flag = await client.fetchToken();
+    console.log("flag", flag);
     const result = await client.getEntities();
-    // console.log(result);
+    console.log("result", result);
     cb(null, result);
     // return value exists for testability
     return result;

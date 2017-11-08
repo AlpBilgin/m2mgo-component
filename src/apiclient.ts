@@ -73,6 +73,7 @@ export class APIClient {
     let list = {};
     try {
       const resp = await this.http.get("/prototypeentities/types/all");
+      console.log("resp", resp);
       const payload = resp.data;
       // console.log(resp.data);
       // TODO filter with JSONata
