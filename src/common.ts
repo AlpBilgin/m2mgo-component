@@ -24,6 +24,7 @@ export async function parseEntity(cfg: ComponentConfig, cb: any) {
     const client = new APIClient(cfg);
     console.log("parseEntity entitiyID: ", client.getEntityID());
     const isAuth = await client.fetchToken();
+    console.log("parseEntity auth", isAuth);
     let entity;
     if (isAuth) {
         // https://pst.m2mgo.com/api/prototypeentities/types/f711d8e2-4814-4eb1-bb0c-5ef330fadda4
