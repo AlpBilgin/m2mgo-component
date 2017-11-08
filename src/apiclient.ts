@@ -57,10 +57,11 @@ export class APIClient {
   // This function will attempt to fetch an initial auth token
   // TODO remove once the response interceptor is verified to work.
   async fetchToken(): Promise<boolean> {
-    console.log("credentials", this.credentials);
+    console.log("fetchToken credentials: ", this.credentials);
     try {
       const resp = await this.http.post("/cms/membership-user/token", this.credentials);
-      console.log("status", resp.status);
+      console.log("fetchToken resp: ", resp);
+      console.log("fetchToken status: ", resp.status);
       // check for status
       if (resp.status === 200) {
         this.http.defaults.headers["Authorization"] = resp.data.TokenPrefix + " " + resp.data.Token;
@@ -79,7 +80,7 @@ export class APIClient {
     let list = {};
     try {
       const resp = await this.http.get("/prototypeentities/types/all");
-      console.log("resp", resp);
+      console.log("getEntities resp: ", resp);
       const payload = resp.data;
       // console.log(resp.data);
       // TODO filter with JSONata
