@@ -20,15 +20,16 @@ export async function getEntitySelectModel(cfg: ComponentConfig, cb: any) {
 }
 
 export async function parseEntity(cfg: ComponentConfig, cb: any) {
-    console.log("parseEntity config: ", cfg);
+    // console.log("parseEntity config: ", cfg);
     const client = new APIClient(cfg);
-    console.log("parseEntity entitiyID: ", client.getEntityID());
+    // console.log("parseEntity entitiyID: ", client.getEntityID());
     const isAuth = await client.fetchToken();
     console.log("parseEntity auth", isAuth);
     let entity;
     if (isAuth) {
         // https://pst.m2mgo.com/api/prototypeentities/types/f711d8e2-4814-4eb1-bb0c-5ef330fadda4
         entity = await client.getEntity();
+        console.log("parseEntity colums", entity.Columns);
     }
     else {
         // If connection can't be established, pass empty object 
@@ -38,7 +39,6 @@ export async function parseEntity(cfg: ComponentConfig, cb: any) {
     let metadata = { in: {}, out: {} };
     let inHolder = {};
     let outHolder = {};
-    // console.log(holder.Columns);
     // TODO do this transform properly.
     const columns = entity.Columns;
     for (const index in columns) {
@@ -52,6 +52,7 @@ export async function parseEntity(cfg: ComponentConfig, cb: any) {
 
     metadata.in = inHolder;
     metadata.out = outHolder;
+    console.log("parseEntity metadata", metadata);
     cb(null, metadata);
     // This is for better testability
     return metadata;
