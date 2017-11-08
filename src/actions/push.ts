@@ -21,19 +21,16 @@ exports.getMetaModel = parseEntity;
  * @returns promise resolving a message to be emitted to the platform
  */
 export async function pushRows(msg: elasticionode.Message, cfg: ComponentConfig, snapshot: any): Promise<any> {
-  console.log("Msg content:");
-  console.log(msg);
-  console.log("Cfg content:");
-  console.log(cfg);
-  console.log("snapshot content:");
-  console.log(snapshot);
+  console.log("Msg body: ", msg);
 
-  let data = msg.body;
+  const data = { Values: msg.body };
 
   // Generate the config for https request
   if (isUndefined(cfg)) {
     throw new Error("cfg is undefined");
   }
+
+
 
   // Client init
   const client = new APIClient(cfg);
