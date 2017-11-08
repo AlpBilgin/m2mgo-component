@@ -31,16 +31,17 @@ export async function parseEntity(cfg: ComponentConfig, cb: any) {
         cb(null, {});
     }
 
-    let metadata = { type: "object", in: {}, out: {} };
-    let inHolder = {};
+    let metadata = { in: {}, out: {} };
+    let inHolder = { type: "object", properties: {} };
     let outHolder = {};
     // TODO do this transform properly.
     const columns = entity.Columns;
     for (const index in columns) {
         let key = columns[index].Key;
         // TODO This needs to be refactored
-        inHolder[key] = {
+        inHolder.properties[key] = {
             "type": columnTypeToString(columns[index].ColumnType),
+            "required": "false",
             "title": columns[index].Label
         };
     }
