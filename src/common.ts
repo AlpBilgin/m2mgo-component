@@ -31,6 +31,7 @@ export async function parseEntity(cfg: ComponentConfig, cb: any) {
         cb(null, {});
     }
 
+    // TODO factor out these definitons into seperate schema files, then import to modify.
     let metadata = { in: {}, out: {} };
     let inHolder = { type: "object", properties: {} };
     let outHolder = {};
@@ -41,14 +42,13 @@ export async function parseEntity(cfg: ComponentConfig, cb: any) {
         // TODO This needs to be refactored
         inHolder.properties[key] = {
             "type": columnTypeToString(columns[index].ColumnType),
-            "required": "false",
             "title": columns[index].Label
         };
     }
 
     metadata.in = inHolder;
     metadata.out = outHolder;
-    console.log("parseEntity metadata", metadata);
+    // console.log("parseEntity metadata", metadata);
     cb(null, metadata);
     // This is for better testability
     return metadata;

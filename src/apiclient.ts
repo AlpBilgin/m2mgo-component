@@ -37,7 +37,7 @@ export class APIClient {
     this.http.interceptors.response.use(
       response => response,
       error => {
-        // console.log("error", error.response.status);
+        // console.log("error", error);
         if (error.response.status === 401) {
           this.http.post("/cms/membership-user/token", this.credentials).then(r => {
             this.http.defaults.headers["Authorization"] = r.data.TokenPrefix + " " + r.data.Token;
@@ -104,12 +104,11 @@ export class APIClient {
   }
 
   async insertRow(payload: any): Promise<any> {
-    const response = await this.http.post("/prototypeentities/entities/" + this.entityID, payload, { responseType: "json" });
-    const result = <APIResult>response.data;
-    if (!result.success) {
-      throw new Error("could not entity for endpoint" + this.entityID);
+    const response = await this.http.put("/prototypeentities/entities/" + this.entityID, payload, { responseType: "json" });
+    if (response.status !== 200) {
+      throw new Error("could not find entity for endpoint" + this.entityID);
     }
-    return result.data;
+    return true;
   }
 
   getEntityID(): string {

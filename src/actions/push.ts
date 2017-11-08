@@ -1,7 +1,6 @@
 import { isUndefined } from "lodash";
 
 import { ComponentConfig } from "../models/componentConfig";
-import { PipedriveMessage } from "../models/pipedriveMessage";
 
 import { APIClient } from "../apiclient";
 import { getEntitySelectModel, parseEntity } from "../common";
@@ -29,7 +28,7 @@ export async function pushRows(msg: elasticionode.Message, cfg: ComponentConfig,
   console.log("snapshot content:");
   console.log(snapshot);
 
-  let data = <PipedriveMessage>msg.body;
+  let data = msg.body;
 
   // Generate the config for https request
   if (isUndefined(cfg)) {
@@ -38,5 +37,6 @@ export async function pushRows(msg: elasticionode.Message, cfg: ComponentConfig,
 
   // Client init
   const client = new APIClient(cfg);
-  return client.insertRow(data);
+  await client.fetchToken();
+  return await client.insertRow(data);
 }
