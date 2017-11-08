@@ -9,19 +9,20 @@ export class InputField {
 
 export async function getEntitySelectModel(cfg: ComponentConfig, cb: any) {
     const client = new APIClient(cfg);
-    console.log("cfg", cfg);
-    const flag = await client.fetchToken();
-    console.log("flag", flag);
+    // console.log("getEntitySelectModel cfg", cfg);
+    // TODO use the returned bool from fetch token to do error checking.
+    await client.fetchToken();
     const result = await client.getEntities();
-    console.log("result", result);
+    // console.log("getEntitySelectModel result", result);
     cb(null, result);
     // return value exists for testability
     return result;
 }
 
 export async function parseEntity(cfg: ComponentConfig, cb: any) {
-
+    console.log("parseEntity config: ", cfg);
     const client = new APIClient(cfg);
+    console.log("parseEntity entitiyID: ", client.getEntityID());
     const isAuth = await client.fetchToken();
     let entity;
     if (isAuth) {

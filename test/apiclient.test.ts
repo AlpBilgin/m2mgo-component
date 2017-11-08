@@ -35,7 +35,7 @@ if (!testConfig) {
 
   it("should run an unsuccessful API client call", async () => {
 
-    let cfg = { Email: "", Password: "", M2MGO_Entity: "" } as ComponentConfig;
+    let cfg = { email: "", password: "", M2MGO_Entity: "" } as ComponentConfig;
 
     const api = new APIClient(cfg);
     // test bad Login
