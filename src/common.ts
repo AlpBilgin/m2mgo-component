@@ -40,8 +40,8 @@ export async function parseEntity(cfg: ComponentConfig, cb: any) {
         let key = columns[index].Key;
         // TODO This needs to be refactored
         inHolder[key] = {
-            type: columnTypeToString(columns[index].ColumnType),
-            title: columns[index].Label
+            "type": columnTypeToString(columns[index].ColumnType),
+            "title": columns[index].Label
         };
     }
 
