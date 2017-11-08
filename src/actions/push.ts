@@ -22,7 +22,7 @@ exports.getMetaModel = parseEntity;
  */
 export async function pushRows(msg: elasticionode.Message, cfg: ComponentConfig, snapshot: any): Promise<any> {
   console.log("Msg body: ", msg);
-
+  console.log("Snapshot", snapshot);
   const data = { Values: msg.body };
 
   // Generate the config for https request
