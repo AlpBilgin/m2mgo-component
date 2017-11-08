@@ -57,8 +57,9 @@ export class APIClient {
   // This function will attempt to fetch an initial auth token
   // TODO remove once the response interceptor is verified to work.
   async fetchToken(): Promise<boolean> {
+    console.log("credentials", this.credentials);
     const resp = await this.http.post("/cms/membership-user/token", this.credentials);
-    // console.log(resp.status);
+    console.log("status", resp.status);
     // check for status
     if (resp.status === 200) {
       this.http.defaults.headers["Authorization"] = resp.data.TokenPrefix + " " + resp.data.Token;
