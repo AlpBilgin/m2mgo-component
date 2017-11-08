@@ -57,7 +57,7 @@ export class APIClient {
   // This function will attempt to fetch an initial auth token
   // TODO remove once the response interceptor is verified to work.
   async fetchToken(): Promise<boolean> {
-    console.log("fetchToken credentials: ", this.credentials);
+    // console.log("fetchToken credentials: ", this.credentials);
     try {
       const resp = await this.http.post("/cms/membership-user/token", this.credentials);
       // console.log("fetchToken resp: ", resp);
