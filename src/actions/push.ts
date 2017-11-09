@@ -35,5 +35,6 @@ export async function pushRows(msg: elasticionode.Message, cfg: ComponentConfig,
   // Client init
   const client = new APIClient(cfg);
   await client.fetchToken();
-  return await client.insertRow(data);
+  const resp = await client.insertRow(data);
+  return { result: resp };
 }

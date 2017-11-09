@@ -1,6 +1,8 @@
 import { APIClient } from "./apiclient";
 import { ComponentConfig } from "./models/componentConfig";
 import { columnTypeToString } from "./utilities";
+const schemaIn = require('../schemas/dynamic.in.json');
+const schemaOut = require('../schemas/push.out.json');
 
 export async function getEntitySelectModel(cfg: ComponentConfig, cb: any) {
     const client = new APIClient(cfg);
@@ -33,21 +35,19 @@ export async function parseEntity(cfg: ComponentConfig, cb: any) {
 
     // TODO factor out these definitons into seperate schema files, then import to modify.
     let metadata = { in: {}, out: {} };
-    let inHolder = { type: "object", properties: {} };
-    let outHolder = {};
     // TODO do this transform properly.
     const columns = entity.Columns;
     for (const index in columns) {
         let key = columns[index].Key;
         // TODO This needs to be refactored
-        inHolder.properties[key] = {
+        schemaIn.properties[key] = {
             "type": columnTypeToString(columns[index].ColumnType),
             "title": columns[index].Label
         };
     }
 
-    metadata.in = inHolder;
-    metadata.out = outHolder;
+    metadata.in = schemaIn;
+    metadata.out = schemaOut;
     // console.log("parseEntity metadata", metadata);
     cb(null, metadata);
     // This is for better testability
