@@ -1,7 +1,7 @@
 import { ColumnType } from "./models/enums";
 
+// This converter function exists to map the backend data types to JS datatypes.
 export function columnTypeToString(input: number): string {
-
     switch (input) {
         case ColumnType.UniqueIdentifier: return "string";
         case ColumnType.DateTime: return "string";

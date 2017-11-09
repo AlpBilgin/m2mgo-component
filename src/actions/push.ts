@@ -1,15 +1,13 @@
 import { isUndefined } from "lodash";
-
 import { ComponentConfig } from "../models/componentConfig";
-
 import { APIClient } from "../apiclient";
 import { getEntitySelectModel, parseEntity } from "../common";
 
 exports.process = pushRows;
 // This "redirect" behavior avoids code duplication
+// TODO The problem may be that getMetaModel is not the same for all actions/triggers
 exports.getEntitySelectModel = getEntitySelectModel;
 exports.getMetaModel = parseEntity;
-
 
 /**
  * Insert new rows into a selected entity.
@@ -23,18 +21,21 @@ exports.getMetaModel = parseEntity;
 export async function pushRows(msg: elasticionode.Message, cfg: ComponentConfig, snapshot: any): Promise<any> {
   console.log("Msg body: ", msg);
   console.log("Snapshot", snapshot);
+  // The msg.body should be exactly preformatted with JSONata.
+  // TODO this object should always match what M2MGO backend expects in PUT
   const data = { Values: msg.body };
 
-  // Generate the config for https request
+  // Check if config came in properly
   if (isUndefined(cfg)) {
     throw new Error("cfg is undefined");
   }
 
-
-
   // Client init
   const client = new APIClient(cfg);
+  // Login the client instance
   await client.fetchToken();
+  // Push data into M2MGO
   const resp = await client.insertRow(data);
+  // Return boolean.
   return { result: resp };
 }

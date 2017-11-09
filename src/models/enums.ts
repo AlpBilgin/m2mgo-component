@@ -1,3 +1,4 @@
+// This comes directly from M2MGO backend
 export enum ColumnType {
     UniqueIdentifier = 0,    // Map to a Guid
     DateTime = 1,            // Map to a DateTime
