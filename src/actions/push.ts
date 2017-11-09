@@ -5,8 +5,8 @@ import { getEntitySelectModel, parseEntity } from "../common";
 
 exports.process = pushRows;
 // This "redirect" behavior avoids code duplication
-// TODO The problem may be that getMetaModel is not the same for all actions/triggers
 exports.getEntitySelectModel = getEntitySelectModel;
+// Sadly this may not really be reusable
 exports.getMetaModel = parseEntity;
 
 /**
@@ -22,7 +22,7 @@ export async function pushRows(msg: elasticionode.Message, cfg: ComponentConfig,
   console.log("Msg body: ", msg);
   console.log("Snapshot", snapshot);
   // The msg.body should be exactly preformatted with JSONata.
-  // TODO this object should always match what M2MGO backend expects in PUT
+  // and should always match what M2MGO backend expects in a PUT request
   const data = { Values: msg.body };
 
   // Check if config came in properly

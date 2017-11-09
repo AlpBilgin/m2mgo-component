@@ -79,23 +79,16 @@ export class APIClient {
 
   // This function will fetch detailed information about all data structures.
   async getEntities() {
-    let list = {};
+    let resp;
+    // TODO do proper error handling
     try {
-      const resp = await this.http.get("/prototypeentities/types/all");
-      // console.log("getEntities resp: ", resp);
-      const payload = resp.data;
+      resp = await this.http.get("/prototypeentities/types/all");
       // console.log(resp.data);
-      // TODO move this to common.ts
-      for (const key in payload) {
-        const ID = payload[key].Identifier.ID;
-        const Label = payload[key].Label;
-        list[ID] = Label;
-      }
     } catch (error) {
       console.log(error);
     }
+    return resp.data;
     // console.log("list",list);
-    return list;
   }
 
   // This function will fetch detailed information about one data structure with given ID hash.

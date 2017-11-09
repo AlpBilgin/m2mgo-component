@@ -12,11 +12,17 @@ export async function getEntitySelectModel(cfg: ComponentConfig, cb: any) {
     // TODO use the returned bool from fetch token to do error checking.
     // Login the instance
     await client.fetchToken();
-    const result = await client.getEntities();
+    let list = {};
+    const payload = await client.getEntities();
+    for (const key in payload) {
+        const ID = payload[key].Identifier.ID;
+        const Label = payload[key].Label;
+        list[ID] = Label;
+    }
     // console.log("getEntitySelectModel result", result); 
-    cb(null, result);
+    cb(null, list);
     // return value exists for testability
-    return result;
+    return list;
 }
 
 // This function exists to dynamically produce input output schemas

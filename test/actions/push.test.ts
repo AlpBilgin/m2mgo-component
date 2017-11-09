@@ -1,6 +1,5 @@
 import { pushRows } from "../../src/actions/push";
 import { getEntitySelectModel, parseEntity } from "../../src/common";
-// import { APIClient } from "../../src/apiclient";
 import { ComponentConfig } from "../../src/models/componentConfig";
 import { columnTypeToString } from '../../src/utilities';
 
@@ -30,6 +29,7 @@ async function tester() {
     let model = await parseEntity(cfg, consoleDumpCallback);
     // console.log("input model", model);
     const columns = model.in["properties"];
+    // Replace column definitions with appropriate literals
     for (const index in columns) {
         let val: any;
         // console.log(columns[index]);
