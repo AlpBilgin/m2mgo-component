@@ -1,4 +1,4 @@
-# m2mgo-component [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
+# m2mgo-component [![Build Status][travis-image]][travis-url]
 > elastic.io integration component for M2MGO platform
 
 # m2mgo-component
@@ -16,7 +16,7 @@ You need to configure your email and password to authenticate the M2MGO componen
 
 ### Push
 
-You can insert data into an entity with push action. Component will detect the available prototype entities and make them available for selection.
+You can insert incoming data into an entity with push action. Component will detect the available prototype entities and make them available for selection.
 
 ## Known issues
 
@@ -24,7 +24,11 @@ WIP
 
 ## TODOs
  * Write more actions / triggers.
+ * Improve error handling.
 
 ## License
 
 Apache-2.0 © [elastic.io GmbH](https://www.elastic.io)
+
+[travis-image]: https://travis-ci.org/AlpBilgin/m2mgo-component.svg?branch=master
+[travis-url]: https://travis-ci.org/AlpBilgin/m2mgo-component
