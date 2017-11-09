@@ -19,8 +19,8 @@ function consoleDumpCallback(first, second) {
 }
 
 async function tester() {
-
-    let cfg = { email: testConfig.TestConfig.Email, password: testConfig.TestConfig.Password, M2MGO_Entity: "" } as ComponentConfig;
+    // Either TestConfig or env has the necessary info.
+    let cfg = testConfig ? { email: testConfig.TestConfig.Email, password: testConfig.TestConfig.Password, M2MGO_Entity: "" } as ComponentConfig : { email: process.env.EMAIL, password: process.env.PASSWORD, M2MGO_Entity: "" } as ComponentConfig;
 
     let result = await getEntitySelectModel(cfg, consoleDumpCallback);
     // console.log("dropdown selection", Object.keys(result)[0]);
@@ -55,13 +55,14 @@ async function tester() {
 }
 
 // If environment variables aren't declared, ignore the test
-if (!testConfig) {
+if (testConfig || (process.env.EMAIL && process.env.PASSWORD)) {
+    it("should non-deterministically select a table and insert placeholder data", tester);
+} else {
+
     it("will ignore integration tests", () => {
         console.log("ignored");
         expect(true).toBe(true);
     });
-} else {
-    it("should non-deterministically select a table and insert placeholder data", tester);
 }
 
 
