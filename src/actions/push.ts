@@ -42,7 +42,8 @@ export async function PushRows(msg: elasticionode.Message, cfg: ComponentConfig,
 
 // This function can't be fully generic due to non dynamic output schema,
 // only the dynamic input schema generation is reused inside parseEntity()
-export async function GetMetaModelPush(cfg: ComponentConfig, cb: any) {
+// callBack is a platform function that extracts metadata object from the component.
+export async function GetMetaModelPush(cfg: ComponentConfig, callBack: any) {
   // Declare an object to contain the input and output schemas
   let metadata = { in: {}, out: {} };
   // Output schema is static but Elastic.IO expects to find it in the dynamic
@@ -52,7 +53,7 @@ export async function GetMetaModelPush(cfg: ComponentConfig, cb: any) {
   // Dynamically populate input schema;
   metadata.in = await parseEntity(cfg);
   // console.log("parseEntity metadata", metadata);
-  cb(null, metadata);
+  callBack(null, metadata);
   // For easier testing
   return metadata;
 

@@ -4,22 +4,25 @@ import { ColumnTypeToPrimitives } from "./models/columnTypeEnum";
 const schemaIn = require('../schemas/dynamic.in.json');
 
 // This function exists to fetch a list of entities from M2MGO backend for dropdown.
-// TODO rename the variable cb to something more expressive
-export async function getEntitySelectModel(cfg: ComponentConfig, cb: any) {
+// callBack is a platform function that extracts the dropdown model object from the component.
+export async function getEntitySelectModel(cfg: ComponentConfig, callBack: any) {
     // Generate a new Client because this function will be called in isolation.
     const client = new APIClient(cfg);
     // TODO use the returned bool from fetch token to do error checking.
-    // Login the instance
+    // Login the client instance
     await client.fetchToken();
     let list = {};
     const payload = await client.getEntities();
     for (const key in payload) {
+        // These are the values to be selected (ID numbers)
         const ID = payload[key].Identifier.ID;
+        // These values will be visible in the dropdown as labels(Human readable table names)
         const Label = payload[key].Label;
+        // These key-value pairs will be used to populate the dropdown.
         list[ID] = Label;
     }
     // console.log("getEntitySelectModel result", result); 
-    cb(null, list);
+    callBack(null, list);
     // return value exists for testability
     return list;
 }
@@ -37,7 +40,7 @@ export async function parseEntity(cfg: ComponentConfig) {
     if (isAuth) {
         // https://pst.m2mgo.com/api/prototypeentities/types/f711d8e2-4814-4eb1-bb0c-5ef330fadda4
         // cfg object contains the ID hash and it is used internally by client.
-        // TODO? should this data passing be externalised?
+        // TODO? should this data passing be externalised
         entity = await client.getEntity();
         // console.log("parseEntity colums", entity.Columns);
     }
