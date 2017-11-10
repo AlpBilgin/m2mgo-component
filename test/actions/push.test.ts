@@ -1,7 +1,6 @@
-import { pushRows } from "../../src/actions/push";
-import { getEntitySelectModel, parseEntity } from "../../src/common";
+import { GetMetaModelPush, PushRows } from "../../src/actions/push";
+import { getEntitySelectModel } from "../../src/common";
 import { ComponentConfig } from "../../src/models/componentConfig";
-import { columnTypeToString } from '../../src/utilities';
 
 export function checkAndImport(path: string): any {
     try {
@@ -26,7 +25,7 @@ async function tester() {
     // console.log("dropdown selection", Object.keys(result)[0]);
     // This bit simulates the act of selecting a entity in dropdown, after which key is passed to config
     cfg.M2MGO_Entity = Object.keys(result)[0];
-    let model = await parseEntity(cfg, consoleDumpCallback);
+    let model = await GetMetaModelPush(cfg, consoleDumpCallback);
     // console.log("input model", model);
     const columns = model.in["properties"];
     // Replace column definitions with appropriate literals
@@ -51,7 +50,7 @@ async function tester() {
     // console.log(columns);
     const payload = { Values: columns };
     const msg = { body: payload };
-    expect(await pushRows(msg, cfg, {})).toBeTruthy();
+    expect(await PushRows(msg, cfg, {})).toBeTruthy();
 }
 
 // If environment variables aren't declared, ignore the test
