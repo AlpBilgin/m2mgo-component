@@ -1,6 +1,6 @@
 import { APIClient } from "./apiclient";
 import { ComponentConfig } from "./models/componentConfig";
-import { columnTypeToString } from "./utilities";
+import { ColumnTypeToPrimitives } from "./models/columnTypeEnum";
 const schemaIn = require('../schemas/dynamic.in.json');
 const schemaOut = require('../schemas/push.out.json');
 
@@ -56,7 +56,7 @@ export async function parseEntity(cfg: ComponentConfig, cb: any) {
     for (const index in columns) {
         let key = columns[index].Key;
         schemaIn.properties[key] = {
-            "type": columnTypeToString(columns[index].ColumnType),
+            "type": ColumnTypeToPrimitives(columns[index].ColumnType),
             "title": columns[index].Label
         };
     }
