@@ -27,7 +27,7 @@ Test Credentials: Creating a testconfig.ts file in project folder is the suggest
 export const TestConfig = { Email: "<email here>", Password: "<password here>" };
 ```
 
-###Testing
+### Testing
 
 WARNING: Testing will insert dummy information to the first table available to your account. Please do not run tests of your account is on a prodution environment.
 
