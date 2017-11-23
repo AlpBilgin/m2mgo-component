@@ -30,6 +30,45 @@ export class APIClient {
 
     this.credentials = { Email: cfg.email, Password: cfg.password };
     this.entityID = cfg.M2MGO_Entity;
+
+    this.http.interceptors.response.use(
+      async response => response,
+      async error => {
+        //console.log("error", error.response.status);
+        if (error.response.status === 401) {
+          try {
+            // For some reason if this http call returns a 400 response, error response is assigned to resp. (it should throw instead)
+            const resp = await this.http.post("/cms/membership-user/token", this.credentials);
+            // if response contains data field everything is okay
+            if (resp.data) {
+              this.updateHeaders(resp, error);
+              return this.http.request(error.response.config);
+            } else {
+              // If interceptor gets a 400 error, this block is executed. It simply returns the original 401 error.
+              console.log("asf");
+              return error;
+            }
+          }
+          catch (error) {
+            //console.log("401", error);
+            return error;
+          }
+        }
+        else {
+          // No special handler for non 401 errors
+          // console.log("400", error);
+          return error;
+        }
+      });
+  }
+
+  private updateHeaders(resp, error?) {
+    const prefix = resp.data.TokenPrefix;
+    const token = resp.data.Token;
+    this.http.defaults.headers["Authorization"] = prefix + " " + token;
+    if (error) {
+      error.response.config.headers["Authorization"] = prefix + " " + token;
+    }
   }
 
   // This function will attempt to fetch an initial auth token
@@ -41,7 +80,7 @@ export class APIClient {
       // check for status code
       if (resp.status === 200) {
         // Extract the Auth token from response body and set as a default header. 
-        this.http.defaults.headers["Authorization"] = resp.data.TokenPrefix + " " + resp.data.Token;
+        this.updateHeaders(resp);
         return true;
       } else {
         return false;
@@ -54,81 +93,38 @@ export class APIClient {
 
   // This function will fetch detailed information about all data structures.
   async getEntities() {
-    let resp;
     try {
-      resp = await this.http.get("/prototypeentities/types/all");
+      const resp = await this.http.get("/prototypeentities/types/all");
       // console.log(resp.data);
+      return resp.data;
     } catch (error) {
-      // If an error is thrown due to invalid token refresh token
-      if (error.response && error.response.status === 401) {
-        return this.refreshtoken(
-          () => this.getEntities()
-        );
-      }
-      // Otherwise throw generic error
-      else {
-        throw new Error("Entities can't be fetched!");
-      }
+      // return undefined literal.
+      // console.log(error);
+      return undefined;
     }
-    return resp.data;
   }
 
   // This function will fetch detailed information about one data structure with given ID hash.
   async getEntity() {
     // Fetch a single entity definition.
-    let resp;
     try {
-      resp = await this.http.get("https://pst.m2mgo.com/api/prototypeentities/types/" + this.entityID);
+      const resp = await this.http.get("https://pst.m2mgo.com/api/prototypeentities/types/" + this.entityID);
+      return resp.data;
     }
     catch (error) {
-      // If an error is thrown due to invalid token refresh token
-      if (error.response && error.response.status === 401) {
-        return this.refreshtoken(
-          () => this.getEntity()
-        );
-      }
-      // Otherwise throw generic error
-      else {
-        throw new Error("Entity " + this.entityID + " can't be fetched!");
-      }
+      // return undefined
+      return undefined;
     }
-    return resp.data;
   }
 
   // This function  will attempt to insert data to a table.
   async insertRow(payload: any) {
     try {
       await this.http.put("/prototypeentities/entities/" + this.entityID, payload, { responseType: "json" });
+      return true;
     } catch (error) {
-      // If an error is thrown due to invalid token refresh token
-      if (error.response && error.response.status === 401) {
-        return this.refreshtoken(
-          () => this.insertRow(payload)
-        );
-      }
-      // Otherwise throw generic error
-      else {
-        throw new Error("could not insert data into entityID: " + this.entityID);
-      }
-    }
-    return true;
-  }
-
-  // Meant to be used by other member functions, parameter should be the calling function itself.
-  // Passing a naked fn pointer here disrupts this inheritance in TSC.
-  // fn should be an arrow function that returns an call of the calling function.
-  // e.g. () => this.getEntities()
-  private async refreshtoken(fn) {
-    // Try to fetch a new token
-    const isAuth = await this.fetchToken();
-    // If token is fetched try the function again, if not throw error
-    if (isAuth) {
-      // console.log("fetched token.");
-      return fn();
-    }
-    else {
-      // TODO this exists for easy testability. There should be a better way.
-      return undefined;
+      // return false
+      return false;
     }
   }
 

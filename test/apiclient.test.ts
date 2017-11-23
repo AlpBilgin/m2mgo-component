@@ -17,13 +17,15 @@ if (testConfig || (process.env.EMAIL && process.env.PASSWORD)) {
 
         it("will request entity with bad token, bad creds", async () => {
             const client = new APIClient(cfg);
-            expect(await client.getEntities()).toBeUndefined();
+            const data = await client.getEntities();
+            expect(data).toBeUndefined();
         });
 
         it("will request entity with bad token, good creds", async () => {
             cfg = testConfig ? { email: testConfig.TestConfig.Email, password: testConfig.TestConfig.Password, M2MGO_Entity: "" } as ComponentConfig : { email: process.env.EMAIL, password: process.env.PASSWORD, M2MGO_Entity: "" } as ComponentConfig;
             const client = new APIClient(cfg);
-            expect(await client.getEntities()).toBeDefined();
+            const data = await client.getEntities();
+            expect(data).toBeDefined();
         });
     });
 } else {
