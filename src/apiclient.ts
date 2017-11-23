@@ -31,6 +31,12 @@ export class APIClient {
     this.credentials = { Email: cfg.email, Password: cfg.password };
     this.entityID = cfg.M2MGO_Entity;
 
+    /**
+     * Received responses will be piped through this callback, it will ignore 2XX responses.
+     * 401 error responses will trigger a re-login attempt. If login is successful, the failed request
+     * will be immediately repeated with new login token.
+     * Other error responses will be ignored.
+     */
     this.http.interceptors.response.use(
       async response => response,
       async error => {
