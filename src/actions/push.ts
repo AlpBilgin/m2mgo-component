@@ -32,8 +32,6 @@ export async function PushRows(msg: elasticionode.Message, cfg: ComponentConfig,
 
   // Client init
   const client = new APIClient(cfg);
-  // Login the client instance
-  await client.fetchToken();
   // Push data into M2MGO
   const resp = await client.insertRow(data);
   // Return boolean.

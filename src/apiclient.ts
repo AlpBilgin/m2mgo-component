@@ -71,26 +71,6 @@ export class APIClient {
     }
   }
 
-  // This function will attempt to fetch an initial auth token
-  // bad login creds return 400
-  async fetchToken(): Promise<boolean> {
-    // console.log("fetchToken credentials: ", this.credentials);
-    try {
-      const resp = await this.http.post("/cms/membership-user/token", this.credentials);
-      // check for status code
-      if (resp.status === 200) {
-        // Extract the Auth token from response body and set as a default header. 
-        this.updateHeaders(resp);
-        return true;
-      } else {
-        return false;
-      }
-    } catch (e) {
-      // console.log("fetchToken throw: ", e);
-      return false;
-    }
-  }
-
   // This function will fetch detailed information about all data structures.
   async getEntities() {
     try {

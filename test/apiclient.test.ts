@@ -10,10 +10,6 @@ let cfg = { email: "", password: "", M2MGO_Entity: "" } as ComponentConfig;
 // TODO OR maybe contact them and ask for a dummy API surface like Elastic.io has?
 if (testConfig || (process.env.EMAIL && process.env.PASSWORD)) {
     describe("Api client unit sized integration tests", () => {
-        it("will attempt false login", async () => {
-            const client = new APIClient(cfg);
-            expect(await client.fetchToken()).toBeFalsy();
-        });
 
         it("will request entity with bad token, bad creds", async () => {
             const client = new APIClient(cfg);
