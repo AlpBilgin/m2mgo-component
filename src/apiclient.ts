@@ -51,7 +51,6 @@ export class APIClient {
               return this.http.request(error.response.config);
             } else {
               // If interceptor gets a 400 error, this block is executed. It simply returns the original 401 error.
-              console.log("asf");
               return error;
             }
           }
@@ -111,6 +110,31 @@ export class APIClient {
     } catch (error) {
       // return false
       return false;
+    }
+  }
+
+  /**
+   * Will search the table for a single item.
+   * payload = { 
+                Filter: [ // the Filter is an array of objects. Each object here should specify a search criterion over a single column:
+                    {
+                        ColumnKey: pkColumnKey,              //key value of column we want to filter
+                        Comparer: 4,   // the filter type 4 is simpl equal
+                        ColumnValue: valueToSearchFor      //the filter value
+                    }
+                ],
+                PageSize: 99999,    //how many results you want to have back (by default 10)
+                TimezoneOffset: 0   //Slice by timestamp, would be modified by 
+            }
+   * 
+   */
+
+  async searchRow(payload: any) {
+    try {
+      const resp = await this.http.post("/prototypeentities/entities/" + this.entityID + "/search", payload, { responseType: "json" });
+      return resp.data;
+    } catch (error) {
+      return undefined;
     }
   }
 
