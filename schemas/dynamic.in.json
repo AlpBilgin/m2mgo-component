@@ -1,4 +1,9 @@
 {
     "type": "object",
-    "properties": {}
+    "properties": {
+        "indexColumnKey": {
+            "type": "string",
+            "title": "Search Column"
+        }
+    }
 }

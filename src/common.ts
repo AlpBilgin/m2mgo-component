@@ -43,7 +43,8 @@ export async function parseEntity(cfg: ComponentConfig) {
     if (!entity) {
         return {};
     }
-    // Format the entity information into an input schema
+    // Add the entity information into the input schema.
+    // Input object has a fixed field for search column name, don't break it here
     // TODO improve this transformation
     const columns = entity.Columns;
     for (const index in columns) {
