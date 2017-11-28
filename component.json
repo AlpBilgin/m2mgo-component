@@ -22,6 +22,7 @@
     "actions": {
         "Insert_Rows": {
             "title": "Transfer data into M2MGO entities",
+            "description": "The component will request a list of entities and compose a dropdown selection from it. Data from previous steps can be mapped to input fields for insetion.",
             "main": "./lib/actions/push.js",
             "fields": {
                 "M2MGO_Entity": {
