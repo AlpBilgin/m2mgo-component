@@ -58,14 +58,14 @@ export async function PushRows(msg: elasticionode.Message, cfg: ComponentConfig,
       // Push as new data
       await client.insertRow(data);
     } else {
-      return false;
+      return { result: false };
     }
   } catch (error) {
     console.log(error);
-    return false;
+    return { result: false };
   }
   // Return boolean.
-  return true;
+  return { result: true };
 }
 
 // This function can't be fully generic due to non dynamic output schema,
