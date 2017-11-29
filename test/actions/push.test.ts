@@ -39,9 +39,10 @@ if (testConfig || (process.env.EMAIL && process.env.PASSWORD && process.env.M2MG
 
         it("should attempt to insert (or update) data into the given table", async () => {
             const columns = {
-                aaaKey: "a",
+                aaaKey: "b",
                 bbbKey: true,
-                cccKey: 10
+                cccKey: 10,
+                indexColumnKey: "cccKey"
             };
             const payload = { Values: columns };
             const msg = { body: payload };

@@ -1,6 +1,6 @@
 import { isUndefined } from "lodash";
 import { ComponentConfig } from "../models/componentConfig";
-import { APIClient } from "../apiclient";
+import { APIClient, ComparisonOperators } from "../apiclient";
 import { getEntitySelectModel, parseEntity } from "../common";
 const schemaOut = require('../../schemas/push.out.json');
 
@@ -21,6 +21,10 @@ exports.getMetaModel = GetMetaModelPush;
 export async function PushRows(msg: elasticionode.Message, cfg: ComponentConfig, snapshot: any): Promise<any> {
   console.log("Msg body: ", msg);
   console.log("Snapshot", snapshot);
+  // Save primary key literal
+  const primaryKey = msg.body.Values.indexColumnKey;
+  // remove primary key to not confuse the system
+  delete msg.body.Values.indexColumnKey;
   // The msg.body should be exactly preformatted with JSONata.
   // and should always match what M2MGO backend expects in a PUT request
   const data = { Values: msg.body };
@@ -32,10 +36,36 @@ export async function PushRows(msg: elasticionode.Message, cfg: ComponentConfig,
 
   // Client init
   const client = new APIClient(cfg);
-  // Push data into M2MGO
-  const resp = await client.insertRow(data);
+  // Check if primary key is already defined
+  const search = {
+    Filter: [ // the Filter is an array of objects. Each object here should specify a search criterion over a single column:
+      {
+        ColumnKey: primaryKey,              //key value of column we want to filter
+        Comparer: ComparisonOperators.Equals,   // we want to find exact match
+        ColumnValue: msg.body.Values[primaryKey]      //TODO this assumes the filter value
+      }
+    ],
+    PageSize: 2,    //how many results you want to have back default is 10 but 2 is enough to see if something is weird
+    TimezoneOffset: 0   //Slice by timestamp, would be modified by 
+  };
+  const found = await client.searchRow(search);
+  console.log(found.Model.length);
+  try {
+    if (found.Model.length === 1) {
+      // Update
+      await client.updateRow(data, found.Model[0].Identifier.ID);
+    } else if (found.Model.length === 0) {
+      // Push as new data
+      await client.insertRow(data);
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
   // Return boolean.
-  return { result: resp };
+  return true;
 }
 
 // This function can't be fully generic due to non dynamic output schema,
