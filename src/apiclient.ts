@@ -11,10 +11,14 @@ export interface APIResult {
 }
 */
 
+//Comparison operators for m2mgo search api.
+export enum comparisonOperators { Greater = 0, GreaterOrEquals = 1, Lower = 2, LowerOrEquals = 3, Equals = 4, Contains = 5 }
+
 export interface Credentials {
   Email: string;
   Password: string;
 }
+
 // Auth attempt with bad login credentials return a 400 error
 // Endpoint access attempt without logging in returns a 401 error
 export class APIClient {

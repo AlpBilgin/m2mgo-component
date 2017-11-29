@@ -1,6 +1,6 @@
 import { checkAndImport } from "./actions/push.test";
 import { ComponentConfig } from "../src/models/componentConfig";
-import { APIClient } from "../src/apiclient";
+import { APIClient, comparisonOperators } from "../src/apiclient";
 
 const testConfig = checkAndImport("../../testconfig");
 
@@ -31,7 +31,7 @@ if (testConfig || (process.env.EMAIL && process.env.PASSWORD)) {
                 Filter: [ // the Filter is an array of objects. Each object here should specify a search criterion over a single column:
                     {
                         ColumnKey: "cccKey",              //key value of column we want to filter
-                        Comparer: 4,   // the filter type 4 is simpl equal
+                        Comparer: comparisonOperators.Equals,   // we want to find exact match
                         ColumnValue: 1      //the filter value
                     }
                 ],
