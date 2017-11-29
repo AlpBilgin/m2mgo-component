@@ -17,47 +17,39 @@ function consoleDumpCallback(first, second) {
     expect(second).toBeDefined();
 }
 
-async function tester() {
-    // Either TestConfig or env has the necessary info.
-    let cfg = testConfig ? { email: testConfig.TestConfig.Email, password: testConfig.TestConfig.Password, M2MGO_Entity: testConfig.TestConfig.M2MGO_Entity } as ComponentConfig : { email: process.env.EMAIL, password: process.env.PASSWORD, M2MGO_Entity: process.env.M2MGO_ENTITY } as ComponentConfig;
-
-    let result = await getEntitySelectModel(cfg, consoleDumpCallback);
-    // console.log("dropdown selection", Object.keys(result)[0]);
-    // This bit simulates the act of selecting a entity in dropdown, after which key is passed to config
-    // cfg.M2MGO_Entity = Object.keys(result)[0];
-    let model = await GetMetaModelPush(cfg, consoleDumpCallback);
-    // console.log("input model", model);
-    const columns = model.in["properties"];
-    // Replace column definitions with appropriate literals
-    for (const index in columns) {
-        let val: any;
-        // console.log(columns[index]);
-        switch (columns[index].type) {
-            case 'number':
-                columns[index] = 9;
-                break;
-            case 'boolean':
-                columns[index] = true;
-                break;
-            case 'string':
-                columns[index] = "a";
-                break;
-            default:
-                columns[index] = "1";
-                break;
-        }
-    }
-    // console.log(columns);
-    const payload = { Values: columns };
-    const msg = { body: payload };
-    expect(await PushRows(msg, cfg, {})).toBeTruthy();
-}
-
 // If environment variables aren't declared, ignore the test
 if (testConfig || (process.env.EMAIL && process.env.PASSWORD && process.env.M2MGO_ENTITY)) {
-    it("should non-deterministically select a table and insert placeholder data", tester);
-} else {
+    describe("should perform unit sized interation tests for push action", async () => {
+        // Either TestConfig or env has the necessary info.
+        let cfg = testConfig ? { email: testConfig.TestConfig.Email, password: testConfig.TestConfig.Password, M2MGO_Entity: testConfig.TestConfig.M2MGO_Entity } as ComponentConfig : { email: process.env.EMAIL, password: process.env.PASSWORD, M2MGO_Entity: process.env.M2MGO_ENTITY } as ComponentConfig;
 
+        it("should fetch a list of table metadata", async () => {
+            let result = await getEntitySelectModel(cfg, consoleDumpCallback);
+            const listOfKeys = Object.keys(result);
+            // Test first result id against a regex
+            expect(listOfKeys[0]).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i);
+        });
+
+        it("should get the metadata of the given table", async () => {
+            let model = await GetMetaModelPush(cfg, consoleDumpCallback);
+            // check validity by duck typing
+            expect(model.in).toBeDefined();
+            expect(model.out).toBeDefined();
+        });
+
+        it("should attempt to insert (or update) data into the given table", async () => {
+            const columns = {
+                aaaKey: "a",
+                bbbKey: true,
+                cccKey: 10
+            };
+            const payload = { Values: columns };
+            const msg = { body: payload };
+            expect(await PushRows(msg, cfg, {})).toBeTruthy();
+        });
+
+    });
+} else {
     it("will ignore integration tests", () => {
         console.log("ignored");
         expect(true).toBe(true);
