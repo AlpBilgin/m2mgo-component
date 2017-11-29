@@ -1,6 +1,6 @@
 import { checkAndImport } from "./actions/push.test";
 import { ComponentConfig } from "../src/models/componentConfig";
-import { APIClient, comparisonOperators } from "../src/apiclient";
+import { APIClient, ComparisonOperators } from "../src/apiclient";
 
 const testConfig = checkAndImport("../../testconfig");
 
@@ -8,6 +8,7 @@ let cfg = { email: "", password: "", M2MGO_Entity: "" } as ComponentConfig;
 
 // TODO Contact M2MGO and get a list of response codes for the entire API surface for http mocking
 // TODO OR maybe contact them and ask for a dummy API surface like Elastic.io has?
+// TODO turn search object into a class ot interface.
 if (testConfig || (process.env.EMAIL && process.env.PASSWORD)) {
     describe("Api client unit sized integration tests", () => {
 
@@ -31,7 +32,7 @@ if (testConfig || (process.env.EMAIL && process.env.PASSWORD)) {
                 Filter: [ // the Filter is an array of objects. Each object here should specify a search criterion over a single column:
                     {
                         ColumnKey: "cccKey",              //key value of column we want to filter
-                        Comparer: comparisonOperators.Equals,   // we want to find exact match
+                        Comparer: ComparisonOperators.Equals,   // we want to find exact match
                         ColumnValue: 1      //the filter value
                     }
                 ],
@@ -50,7 +51,7 @@ if (testConfig || (process.env.EMAIL && process.env.PASSWORD)) {
                 Filter: [ // the Filter is an array of objects. Each object here should specify a search criterion over a single column:
                     {
                         ColumnKey: "cccKey",              //key value of column we want to filter
-                        Comparer: comparisonOperators.Equals,   // we want to find exact match
+                        Comparer: ComparisonOperators.Equals,   // we want to find exact match
                         ColumnValue: 1      //TODO this assumes the filter value
                     }
                 ],
