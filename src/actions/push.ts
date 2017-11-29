@@ -42,7 +42,7 @@ export async function PushRows(msg: elasticionode.Message, cfg: ComponentConfig,
       {
         ColumnKey: primaryKey,              //key value of column we want to filter
         Comparer: ComparisonOperators.Equals,   // we want to find exact match
-        ColumnValue: msg.body.Values[primaryKey]      //TODO this assumes the filter value
+        ColumnValue: msg.body[primaryKey]      //TODO this assumes the filter value
       }
     ],
     PageSize: 2,    //how many results you want to have back default is 10 but 2 is enough to see if something is weird
