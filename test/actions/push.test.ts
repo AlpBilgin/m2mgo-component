@@ -19,12 +19,12 @@ function consoleDumpCallback(first, second) {
 
 async function tester() {
     // Either TestConfig or env has the necessary info.
-    let cfg = testConfig ? { email: testConfig.TestConfig.Email, password: testConfig.TestConfig.Password, M2MGO_Entity: "" } as ComponentConfig : { email: process.env.EMAIL, password: process.env.PASSWORD, M2MGO_Entity: "" } as ComponentConfig;
+    let cfg = testConfig ? { email: testConfig.TestConfig.Email, password: testConfig.TestConfig.Password, M2MGO_Entity: testConfig.TestConfig.M2MGO_Entity } as ComponentConfig : { email: process.env.EMAIL, password: process.env.PASSWORD, M2MGO_Entity: process.env.M2MGO_ENTITY } as ComponentConfig;
 
     let result = await getEntitySelectModel(cfg, consoleDumpCallback);
     // console.log("dropdown selection", Object.keys(result)[0]);
     // This bit simulates the act of selecting a entity in dropdown, after which key is passed to config
-    cfg.M2MGO_Entity = Object.keys(result)[0];
+    // cfg.M2MGO_Entity = Object.keys(result)[0];
     let model = await GetMetaModelPush(cfg, consoleDumpCallback);
     // console.log("input model", model);
     const columns = model.in["properties"];
@@ -34,7 +34,7 @@ async function tester() {
         // console.log(columns[index]);
         switch (columns[index].type) {
             case 'number':
-                columns[index] = 1;
+                columns[index] = 9;
                 break;
             case 'boolean':
                 columns[index] = true;
@@ -54,7 +54,7 @@ async function tester() {
 }
 
 // If environment variables aren't declared, ignore the test
-if (testConfig || (process.env.EMAIL && process.env.PASSWORD)) {
+if (testConfig || (process.env.EMAIL && process.env.PASSWORD && process.env.M2MGO_ENTITY)) {
     it("should non-deterministically select a table and insert placeholder data", tester);
 } else {
 
