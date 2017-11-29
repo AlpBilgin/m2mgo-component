@@ -22,9 +22,9 @@ export async function PushRows(msg: elasticionode.Message, cfg: ComponentConfig,
   console.log("Msg body: ", msg);
   console.log("Snapshot", snapshot);
   // Save primary key literal
-  const primaryKey = msg.body.Values.indexColumnKey;
+  const primaryKey = msg.body.indexColumnKey;
   // remove primary key to not confuse the system
-  delete msg.body.Values.indexColumnKey;
+  delete msg.body.indexColumnKey;
   // The msg.body should be exactly preformatted with JSONata.
   // and should always match what M2MGO backend expects in a PUT request
   const data = { Values: msg.body };
