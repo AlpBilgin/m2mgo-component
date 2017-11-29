@@ -29,9 +29,30 @@ export async function getEntitySelectModel(cfg: ComponentConfig, callBack: any) 
     return list;
 }
 
-export function getColumnSelectModel(cfg: ComponentConfig, callBack: any) {
-    console.log(cfg);
+export async function getColumnSelectModel(cfg: ComponentConfig, callBack: any) {
     callBack(null, {});
+    // Generate a new Client because this function will be called in isolation.
+    const client = new APIClient(cfg);
+
+    let list = {};
+    let payload = await client.getEntity();
+    // if undefined return empty object
+    if (!payload) {
+        return {};
+    }
+    payload = payload.Columns;
+    for (const key in payload) {
+        // These are the values to be selected (ID numbers)
+        const ID = payload[key].ID;
+        // These values will be visible in the dropdown as labels(Human readable table names)
+        const Label = payload[key].Label;
+        // These key-value pairs will be used to populate the dropdown.
+        list[ID] = Label;
+    }
+    // console.log("getEntitySelectModel result", result); 
+    callBack(null, list);
+    // return value exists for testability
+    return list;
 }
 
 // This function exists to dynamically produce input output schemas
