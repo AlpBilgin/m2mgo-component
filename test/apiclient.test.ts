@@ -45,7 +45,7 @@ if (testConfig || (process.env.EMAIL && process.env.PASSWORD)) {
         });
 
         it("will conduct a search, will update if an entity is found, will search again to compare", async () => {
-            cfg = testConfig ? { email: testConfig.TestConfig.Email, password: testConfig.TestConfig.Password, M2MGO_Entity: testConfig.TestConfig.M2MGO_Entity } as ComponentConfig : { email: process.env.EMAIL, password: process.env.PASSWORD, M2MGO_Entity: testConfig.TestConfig.M2MGO_ENTITY } as ComponentConfig;
+            cfg = testConfig ? { email: testConfig.TestConfig.Email, password: testConfig.TestConfig.Password, M2MGO_Entity: testConfig.TestConfig.M2MGO_Entity } as ComponentConfig : { email: process.env.EMAIL, password: process.env.PASSWORD, M2MGO_Entity: process.env.M2MGO_ENTITY } as ComponentConfig;
             const client = new APIClient(cfg);
             const payload = {
                 Filter: [ // the Filter is an array of objects. Each object here should specify a search criterion over a single column:
