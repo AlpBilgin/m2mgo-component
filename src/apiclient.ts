@@ -118,7 +118,7 @@ export class APIClient {
   }
 
   /**
-   * Will search the table for a single item.
+   * Will search the table for a single item. /prototypeentities/entities/{entityID}/search
    * payload = { 
                 Filter: [ // the Filter is an array of objects. Each object here should specify a search criterion over a single column:
                     {
@@ -139,6 +139,26 @@ export class APIClient {
       return resp.data;
     } catch (error) {
       return undefined;
+    }
+  }
+
+  /**
+   * The api to update a row is /prototypeentities/entities/{entityID}/{rowId}
+   * will update a single item
+          payload = {
+              Values: {
+                  key1: ‘new value for key1',
+                  key2: 'new value for key2’
+              }
+          }
+ */
+  async updateRow(payload: any, rowId: string) {
+    try {
+      const resp = await this.http.post("/prototypeentities/entities/" + this.entityID + "/" + rowId, payload, { responseType: "json" });
+      return resp;
+    } catch (error) {
+      //console.log("error", error);
+      return error;
     }
   }
 
