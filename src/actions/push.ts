@@ -1,12 +1,13 @@
 import { isUndefined } from "lodash";
 import { ComponentConfig } from "../models/componentConfig";
 import { APIClient, ComparisonOperators } from "../apiclient";
-import { getEntitySelectModel, parseEntity } from "../common";
+import { getEntitySelectModel, getColumnSelectModel, parseEntity } from "../common";
 const schemaOut = require('../../schemas/push.out.json');
 
 exports.process = PushRows;
 // This "redirect" behavior avoids code duplication
 exports.getEntitySelectModel = getEntitySelectModel;
+exports.getColumnSelectModel = getColumnSelectModel;
 exports.getMetaModel = GetMetaModelPush;
 
 /**

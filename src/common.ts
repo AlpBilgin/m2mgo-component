@@ -29,6 +29,11 @@ export async function getEntitySelectModel(cfg: ComponentConfig, callBack: any) 
     return list;
 }
 
+export function getColumnSelectModel(cfg: ComponentConfig, callBack: any) {
+    console.log(cfg);
+    callBack(null, {});
+}
+
 // This function exists to dynamically produce input output schemas
 export async function parseEntity(cfg: ComponentConfig) {
     // console.log("parseEntity config: ", cfg);

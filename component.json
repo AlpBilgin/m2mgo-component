@@ -31,6 +31,16 @@
                     "required": true,
                     "model": "getEntitySelectModel",
                     "prompt": "Please select an entity."
+                },
+                "Entity_key": {
+                    "label": "Select primary key column",
+                    "viewClass": "SelectView",
+                    "required": true,
+                    "model": "getColumnSelectModel",
+                    "prompt": "Please select the primary key.",
+                    "require": [
+                        "M2MGO_Entity"
+                    ]
                 }
             },
             "dynamicMetadata": true
