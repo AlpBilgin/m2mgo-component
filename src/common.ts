@@ -13,6 +13,7 @@ export async function getEntitySelectModel(cfg: ComponentConfig, callBack: any) 
     const payload = await client.getEntities();
     // if undefined return empty object
     if (!payload) {
+        console.log("entity failed");
         return {};
     }
     for (const key in payload) {
@@ -30,7 +31,6 @@ export async function getEntitySelectModel(cfg: ComponentConfig, callBack: any) 
 }
 
 export async function getColumnSelectModel(cfg: ComponentConfig, callBack: any) {
-    callBack(null, {});
     // Generate a new Client because this function will be called in isolation.
     const client = new APIClient(cfg);
 
@@ -38,6 +38,7 @@ export async function getColumnSelectModel(cfg: ComponentConfig, callBack: any) 
     let payload = await client.getEntity();
     // if undefined return empty object
     if (!payload) {
+        console.log("column failed");
         return {};
     }
     payload = payload.Columns;
