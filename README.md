@@ -1,4 +1,4 @@
-# m2mgo-component [![Build Status][travis-image]][travis-url]
+# m2mgo-component
 > elastic.io integration component for M2MGO platform
 
 # m2mgo-component
@@ -6,7 +6,7 @@ M2MGO Component component for the [elastic.io platform](http://www.elastic.io &#
 
 ## Before you Begin
 
-Before you can deploy any code into elastic.io **you must be a registered elastic.io platform user**. Please see our home page at [http://www.elastic.io](http://www.elastic.io) to learn how.
+Before you can deploy any code into elastic.io **you must be a registered elastic.io platform user**. Please see the home page at [http://www.elastic.io](http://www.elastic.io) to learn how.
 
 ## Getting Started
 
@@ -51,7 +51,4 @@ You can insert incoming data into an entity with push action. Component will det
 
 ## License
 
-Apache-2.0 © [elastic.io GmbH](https://www.elastic.io)
-
-[travis-image]: https://travis-ci.org/AlpBilgin/m2mgo-component.svg?branch=master
-[travis-url]: https://travis-ci.org/AlpBilgin/m2mgo-component
+Apache-2.0 © [Trendig Technology Services GmbH](https://www.trendig.com)
