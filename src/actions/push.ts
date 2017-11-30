@@ -22,6 +22,7 @@ exports.getMetaModel = GetMetaModelPush;
 export async function PushRows(msg: elasticionode.Message, cfg: ComponentConfig, snapshot: any): Promise<any> {
   console.log("Msg body: ", msg);
   console.log("Snapshot", snapshot);
+  console.log("Config", cfg);
   // Save primary key literal
   const primaryKey = cfg.Entity_key;
   // The msg.body should be exactly preformatted with JSONata.
