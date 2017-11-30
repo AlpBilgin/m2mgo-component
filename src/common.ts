@@ -44,7 +44,7 @@ export async function getColumnSelectModel(cfg: ComponentConfig, callBack: any) 
     payload = payload.Columns;
     for (const key in payload) {
         // These are the values to be selected (ID numbers)
-        const ID = payload[key].ID;
+        const ID = payload[key].Key;
         // These values will be visible in the dropdown as labels(Human readable table names)
         const Label = payload[key].Label;
         // These key-value pairs will be used to populate the dropdown.
